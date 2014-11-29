@@ -1,6 +1,6 @@
 """
 main.py
-Initiliazes all of the components of Felix
+Initializes all of the components of Felix
 Hands over control to the Felix class to operate indefinitely
 """
 

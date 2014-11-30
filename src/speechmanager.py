@@ -114,23 +114,22 @@ class SpeechManager(object):
         if IDENTIFIER.upper() in text.upper(): return ambientBase
         else: return False
         
-    def listen(self, userInfo, ambientBase=None, isFullVocabulary=False):
+    def listen(self, ambientBase=None, isFullVocabulary=False):
         """
         Actively listens to user speech
         Records until 1 second of silence
         Time-out after 10 seconds of initial silence
         """
         FILENAME = "speech.wav"
-        SOUNDNAME = "beep.wav"
+        SOUNDNAME = "media-folder/beep.wav"
         LISTEN_TIME = 10
         
         if ambientBase == None:
             ambientBase = self.getAmbientBase()
         
         # TONE IN
-        #self.speechOut.play(SOUNDNAME)
-        self.speakText("Yes, %s?" % (userInfo.nickname()))        
-
+        self.speechOut.play(SOUNDNAME)
+        
         # Initialize audio stream
         audio = pyaudio.PyAudio()
         stream = audio.open(format = pyaudio.paInt16, channels = 1,
@@ -163,9 +162,8 @@ class SpeechManager(object):
         write_frames.close()
         
         # TONE OUT
-        #self.speechOut.play(SOUNDNAME)
-        self.speakText("One moment.")        
-
+        self.speechOut.play(SOUNDNAME)
+        
         # Return text from speech
         text = self.speechIn.textFromSpeech(FILENAME, isFullVocabulary)
         return text

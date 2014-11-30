@@ -20,7 +20,7 @@ class Jokes(Extension):
         super(Jokes, self).__init__(matchExpression, keys, precedence)
 
     @staticmethod
-    def randomJoke(jokeFile = "jokes.txt"):
+    def randomJoke(jokeFile = "media-folder/jokes.txt"):
         """
         Returns a random joke from jokes.txt
         """

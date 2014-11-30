@@ -27,7 +27,7 @@ def isInternetOn():
 if __name__ == "__main__":
     print
     print "/-------------------------------------------------\\"
-    print "| Welcome to FELIX                                |"
+    print "| Welcome to Felix                                |"
     print "| The intelligent computer personal assistant     |"
     print "| Copyright 2014 Devin Gund. All rights reserved. |"
     print "\\-------------------------------------------------/"

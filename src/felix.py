@@ -27,5 +27,8 @@ class Felix(object):
             try: ambientBase = self.speechManager.listenForIdentifier(self.IDENTIFIER)
             except: continue
             if ambientBase:
-                input = self.speechManager.listen(self.userInfo, ambientBase)
+                nickname = self.userInfo.nickname()
+                self.speechManager.speakText("Yes, %s." % (nickname))
+                input = self.speechManager.listen(ambientBase)
+                self.speechManager.speakText("One moment.")
                 self.extensionManager.execute(input, self.userInfo)

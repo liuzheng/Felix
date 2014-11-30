@@ -15,6 +15,7 @@ Felix is an intelligent personal assistant with speech recognition and text-to-s
 - [Pocketsphinx](http://cmusphinx.sourceforge.net/) – speech to text
 - [eSpeak](http://espeak.sourceforge.net/) – text to speech
 - [PyAudio](http://people.csail.mit.edu/hubert/pyaudio/) – audio library for sampling sound from a stream
+- [Beautiful Soup](http://www.crummy.com/software/BeautifulSoup/) - screen-scraping library for parsing web pages
 
 The following modules are used to generate speech language models offline and dynamically for Pocketsphinx, and were
 recommended by the creators of Pocketsphinx at CMU on [their website](http://cmusphinx.sourceforge.net/wiki/tutoriallm):
@@ -48,3 +49,4 @@ classes in extension-folder that inherit from Extension, the parent class for al
 - undefined.py – Responds with a message telling the user their speech was unclear
 - username.py – Responds with the name of the user
 - weather.py – Responds with the current weather and forecast for the user location from [Weather Underground](http://www.wunderground.com/)
+- wikipedia.py - Responds with by asking for a query and then with a summary of the query on [Wikipedia](https://en.wikipedia.org/)

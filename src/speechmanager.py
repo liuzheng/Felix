@@ -5,7 +5,7 @@ from wave import open as openAudio
 import re
 
 class SpeechManager(object):
-    
+
     def __init__(self, speechIn, speechOut):
         """
         Initializes the Speech instance
@@ -16,7 +16,7 @@ class SpeechManager(object):
         self.AMBIENT_MULTIPLIER = 1.8 # Leeway to distinguish from ambient noise
         self.DATA_RATE = 16000 # Rate of the audio data
         self.BUFFER_SIZE = 1024 # Amount of frames per buffer for audio data
-    
+
     def getLevel(self, data):
         """
         Returns the level of an audio data file
@@ -32,15 +32,16 @@ class SpeechManager(object):
         Listens to ambient noise and returns a level to be used as the base
         """
         LISTEN_TIME = 1 # Time alloted to calculate ambient base
-         
+
         # Initialize audio stream
-        audio = pyaudio.PyAudio() 
+        audio = pyaudio.PyAudio()
         stream = audio.open(format = pyaudio.paInt16, channels = 1,
                             rate = self.DATA_RATE, input = True,
                             frames_per_buffer = self.BUFFER_SIZE)
 
         # Store level values
-        levels = [i for i in range(20)]
+        dataPoints = 20 # Amount of level data; higher is precise but s    low
+        levels = [i for i in range(dataPoints)]
 
         # Calculate average level for ambient base
         for i in range(0, (self.DATA_RATE / self.BUFFER_SIZE) * LISTEN_TIME):
@@ -53,7 +54,7 @@ class SpeechManager(object):
         ambientBase = average * self.AMBIENT_MULTIPLIER
         stream.stop_stream()
         stream.close()
-        audio.terminate() 
+        audio.terminate()
         return ambientBase
 
     def listenForIdentifier(self, IDENTIFIER):
@@ -65,11 +66,11 @@ class SpeechManager(object):
         ambientBase = self.getAmbientBase()
 
         # Initialize audio stream
-        audio = pyaudio.PyAudio()        
+        audio = pyaudio.PyAudio()
         stream = audio.open(format = pyaudio.paInt16, channels = 1,
                             rate = self.DATA_RATE, input = True,
                             frames_per_buffer = self.BUFFER_SIZE)
-        
+
         # Listening for sound above ambient base
         frames = []
         soundDetected = False
@@ -81,23 +82,24 @@ class SpeechManager(object):
                 soundDetected = True
                 break
 
-        # Stop current steam if no sound detected 
+        # Stop current steam if no sound detected
         if not soundDetected:
             print "No sound detected"
             stream.stop_stream()
             stream.close()
-            audio.terminate()            
+            audio.terminate()
             return None
-        
+
         # Else, sound was detected and must be checked for IDENTIFIER
         # Cutoff recording before disturbance was detected
-        frames = frames[-20:]
-        
+        disturbanceBuffer = 20
+        frames = frames[-disturbanceBuffer:]
+
         # Finish recording
         for i in xrange(0, (self.DATA_RATE / self.BUFFER_SIZE)):
             data = stream.read(self.BUFFER_SIZE)
             frames.append(data)
-        
+
         # Save audio data and stop audio collection
         stream.stop_stream()
         stream.close()
@@ -113,23 +115,23 @@ class SpeechManager(object):
         text = self.speechIn.textFromSpeech(FILENAME, isIdentifier = True)
         if IDENTIFIER.upper() in text.upper(): return ambientBase
         else: return False
-        
+
     def listen(self, ambientBase=None, isFullVocabulary=False):
         """
         Actively listens to user speech
         Records until 1 second of silence
-        Time-out after 10 seconds of initial silence
+        Time-out after 5 seconds of initial silence
         """
         FILENAME = "speech.wav"
         SOUNDNAME = "media-folder/beep.wav"
-        LISTEN_TIME = 10
-        
+        TIMEOUT_LOOP = 20
+
         if ambientBase == None:
             ambientBase = self.getAmbientBase()
-        
+
         # TONE IN
         self.speechOut.play(SOUNDNAME)
-        
+
         # Initialize audio stream
         audio = pyaudio.PyAudio()
         stream = audio.open(format = pyaudio.paInt16, channels = 1,
@@ -138,18 +140,21 @@ class SpeechManager(object):
 
         frames = []
         # Initialize list of levels
-        levels = [ambientBase for i in range(30)]
-        
-        # Listening for sound above ambient base
-        for i in range(0, self.DATA_RATE / self.BUFFER_SIZE * LISTEN_TIME):
+        dataPoints = 30 # Amount of level data; higher is precise but slow
+        levels = [ambientBase for i in range(dataPoints)]
+        # Listening for sound above ambientBase
+        for i in range(0, TIMEOUT_LOOP * self.DATA_RATE / self.BUFFER_SIZE):
             data = stream.read(self.BUFFER_SIZE)
             frames.append(data)
             level = self.getLevel(data)
             levels.pop(0)
             levels.append(level)
             average = sum(levels) / float(len(levels))
-            if average < ambientBase: break
-                
+            # Need to scale the level down to prevent false positives
+            # Value determined through trial and error
+            dampeningScale = 3.0 / 4.0
+            if average < ambientBase * dampeningScale: break
+
         # Save audio data and stop audio collection
         stream.stop_stream()
         stream.close()
@@ -160,30 +165,29 @@ class SpeechManager(object):
         write_frames.setframerate(self.DATA_RATE)
         write_frames.writeframes("".join(frames))
         write_frames.close()
-        
+
         # TONE OUT
         self.speechOut.play(SOUNDNAME)
-        
+
         # Return text from speech
-        text = self.speechIn.textFromSpeech(FILENAME, isFullVocabulary)
+        text = self.speechIn.textFromSpeech(FILENAME, isFullVocabulary = isFullVocabulary)
         return text
 
-    
     def speakText(self, text):
         """
         Plays a sound file created from a string of output text
         """
         text = SpeechManager.formatForSpeech(text)
         self.speechOut.speakText(text)
-    
+
     @staticmethod
     def formatYears(text):
         """
-        Ensures that years are pronounced as correctlty instead of as numbers
+        Ensures that years are pronounced correctly instead of as numbers
         """
         YEAR_REGEX = re.compile(r"(\b)(\d\d)([1-9]\d)(\b)")
         return YEAR_REGEX.sub("\g<1>\g<2> \g<3>\g<4>", text)
-    
+
     @staticmethod
     def formatForSpeech(text):
         """

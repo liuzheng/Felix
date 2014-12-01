@@ -16,7 +16,7 @@ class News(Extension):
         # Key words that Felix must compile into the language model
         keys = ["NEWS", "STORIES"]
         # Extension with lower precedence gets executed in a tie
-        precedence = 0
+        precedence = 2
         super(News, self).__init__(matchExpression, keys, precedence)
 
     @staticmethod

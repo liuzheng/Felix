@@ -20,7 +20,7 @@ class Wikipedia(Extension):
         # Key words that Felix must compile into the language model
         keys = ["WIKIPEDIA", "SEARCH"]
         # Extension with lower precedence gets executed in a tie
-        precedence = 1
+        precedence = 2
         super(Wikipedia, self).__init__(matchExpression, keys, precedence)
 
     @staticmethod
@@ -57,7 +57,7 @@ class Wikipedia(Extension):
         """
         speechManager.speakText("Please speak your search query.")
         query = speechManager.listen(isFullVocabulary = True)
-        speechManager.speakText("Searching for %s", query)
+        speechManager.speakText("Searching for %s" % (query))
         summary = Wikipedia.getArticleSummary(query)
         if summary:
             speechManager.speakText(summary)

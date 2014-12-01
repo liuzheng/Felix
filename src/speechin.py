@@ -9,7 +9,7 @@ class PocketSphinx(object):
     def __init__(self,
                  MODEL = "/usr/local/share/pocketsphinx/model/hmm/en_US/hub4wsj_sc_8k",
                  LANGUAGE_FOLDER="language-folder/",
-                 LANGUAGEMODE="languagemodel.lm",
+                 LANGUAGEMODEL="languagemodel.lm",
                  DICTIONARY="dictionary.dic",
                  LANGUAGEMODEL_IDENTIFIER="languagemodel_identifier.lm",
                  DICTIONARY_IDENTIFIER="dictionary_identifier.dic",
@@ -23,12 +23,12 @@ class PocketSphinx(object):
         except: import pocketsphinx
         # Create the speech decoder for Felix commands
         self.speechDecoder = pocketsphinx.Decoder(hmm=MODEL,
-                                       lm=LANGUAGE_FOLDER + LANGUAGEMODEL_PATH,
-                                       dict=LANGUAGE_FOLDER + DICTIONARY_PATH)
+                                       lm=LANGUAGE_FOLDER + LANGUAGEMODEL,
+                                       dict=LANGUAGE_FOLDER + DICTIONARY)
         # Create the speech decoder for the IDENTIFIER
         self.speechDecoderIdentifier = pocketsphinx.Decoder(hmm=MODEL,
-                            lm=LANGUAGE_FOLDER + LANGUAGEMODEL_IDENTIFIER_PATH,
-                            dict=LANGUAGE_FOLDER + DICTIONARY_IDENTIFIER_PATH)
+                            lm=LANGUAGE_FOLDER + LANGUAGEMODEL_IDENTIFIER,
+                            dict=LANGUAGE_FOLDER + DICTIONARY_IDENTIFIER)
         # Create the speech decoder for full speech vocabulary
         self.speechDecoderFullVocabulary = pocketsphinx.Decoder(hmm=MODEL,
                                   lm=LANGUAGEMODEL_FULL, dict=DICTIONARY_FULL)
@@ -60,6 +60,7 @@ class PocketSphinx(object):
             self.speechDecoder.decode_raw(audioFile)
             textPossibilities = self.speechDecoder.get_hyp() # Hypothesis
         text = textPossibilities[0]
+        if text == None: text = ""
         print "---------------------------------------------"
         print "Text found:", text
         print "---------------------------------------------"

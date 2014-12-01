@@ -46,8 +46,7 @@ class ExtensionManager(object):
         The lower extension.getPrecedence() means that extension
             gets executed if two extensions should execute
         """
-        self.extensions.sort(key = lambda extension: extension.getPrecedence(),
-                             reverse=True)
+        self.extensions.sort(key = lambda extension: extension.getPrecedence())
     
     def compileLanguage(self, CORPUS_PATH="language-folder/corpus.txt",
                         DICTIONARY_PATH="language-folder/dictionary.dic",

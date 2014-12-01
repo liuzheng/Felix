@@ -26,7 +26,7 @@ class Time(Extension):
         Called when the extension must execute
         Responds with the current time for the user's time zone
         """
-        tz = pytz.timezone(userInfo.getTimezone())
+        tz = pytz.timezone(userInfo.timezone())
         now = datetime.datetime.now(tz = tz)
         service = DateService()
         time = str(service.convertTime(now))

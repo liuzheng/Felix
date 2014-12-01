@@ -73,6 +73,7 @@ def setupTimezone(userInfo):
     """
     address = "http://en.wikipedia.org/wiki/List_of_tz_database_time_zones"
     timezone = promptForInfo(("Timezone (select from the TZ* column at %s)" % (address)), userInfo.get("timezone", ""))
+    userInfo["timezone"] = timezone
 
 def setupWundergroundKey(userInfo):
     """

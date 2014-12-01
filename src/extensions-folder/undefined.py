@@ -17,7 +17,7 @@ class Undefined(Extension):
         # Key words that Felix must compile into the language model
         keys = []
         # Extension with lower precedence gets executed in a tie
-        precedence = -1 * (maxint - 1)
+        precedence = maxint - 1
         super(Undefined, self).__init__(matchExpression, keys, precedence)
     
     def execute(self, input, speechManager, userInfo):

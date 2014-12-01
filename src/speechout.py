@@ -1,4 +1,4 @@
-d"""
+"""
 speechout.py
 Encapsulates any text-to-speech applications used with Felix
 """

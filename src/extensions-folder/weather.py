@@ -17,7 +17,7 @@ class Weather(Extension):
         # Key words that Felix must compile into the language model
         keys = ["WEATHER", "FORECAST"]
         # Extension with lower precedence gets executed in a tie
-        precedence = 0
+        precedence = 1
         super(Weather, self).__init__(matchExpression, keys, precedence)
 
     @staticmethod

@@ -77,7 +77,7 @@ class UserInfo(object):
         """
         return self.infoForKey("locationcity")
         
-    def timeZone(self):
+    def timezone(self):
         """
         Returns user's TZ* time zone code
         """

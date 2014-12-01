@@ -58,8 +58,10 @@ class Extension(object):
         Returns True if the input is related to this extension
         """
         snippet = self.matchExpression
+        # Account for case where snippet can match anything (or nothing)
+        if snippet != ".*": snippet = r"\b" + snippet + r"\b"
         # Regex earches for self.matchExpression within the input
-        isMatch = bool(re.search(r"\b" + snippet + r"\b", input, re.IGNORECASE))
+        isMatch = bool(re.search(snippet, input, re.IGNORECASE))
         return isMatch
     
     def execute(self, input, speechManager, userInfo):

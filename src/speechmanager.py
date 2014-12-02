@@ -8,7 +8,7 @@ Utilizes modules:
     - pyaudio
     - audioop
     - wave
-    
+
 Information for working with pyaudio provided from:
     http://people.csail.mit.edu/hubert/pyaudio/docs/
 """
@@ -182,8 +182,8 @@ class SpeechManager(object):
         """
         Ensures that years are pronounced correctly instead of as numbers
         """
-        YEAR_REGEX = re.compile(r"(\b)(\d\d)([1-9]\d)(\b)")
-        return YEAR_REGEX.sub("\g<1>\g<2> \g<3>\g<4>", text)
+        yearExpression = re.compile(r"(\b)(\d\d)([1-9]\d)(\b)")
+        return yearExpression.sub("\g<1>\g<2> \g<3>\g<4>", text)
 
     @staticmethod
     def formatForSpeech(text):

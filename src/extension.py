@@ -64,7 +64,7 @@ class Extension(object):
         isMatch = bool(re.search(snippet, input, re.IGNORECASE))
         return isMatch
     
-    def execute(self, input, speechManager, userInfo):
+    def execute(self, input, speechManager, memoryManager, userInfo):
         """
         Responds to user input with pertinent information or actions
         Overridden in any custom extension to provide functionality

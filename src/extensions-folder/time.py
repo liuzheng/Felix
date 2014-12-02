@@ -23,7 +23,7 @@ class Time(Extension):
     @staticmethod
     def getTime(userInfo):
         """
-        Returns the current time in 12-hour format
+        Returns the current time in 12-hour speakable format
         """
         tz = pytz.timezone(userInfo.timezone())
         now = datetime.datetime.now(tz = tz)
@@ -38,14 +38,17 @@ class Time(Extension):
         else:
             if hour == 0: hour = halfTime
             period = "AM"
+        # Prefix minute with zeroes if necessary
+        minuteString = str(minute)
+        while len(minuteString) < 2: minuteString = "0" + minuteString
         # Format timeString
-        timeString = "%i:%i %s" % (hour, minute, period)
+        timeString = "%i:%s %s" % (hour, minuteString, period)
         return timeString
 
     @staticmethod
     def getDate(userInfo):
         """
-        Returns the current time in 12-hour format
+        Returns the current date in a speakable format
         """
         tz = pytz.timezone(userInfo.timezone())
         now = datetime.datetime.now(tz = tz)
@@ -60,7 +63,7 @@ class Time(Extension):
         dateString = "%s %i, %i" % (monthString, day, year)
         return dateString
 
-    def execute(self, input, speechManager, userInfo):
+    def execute(self, input, speechManager, memoryManager, userInfo):
         """
         Called when the extension must execute
         Responds with the current time and date for the user's time zone

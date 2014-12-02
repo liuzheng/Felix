@@ -10,6 +10,7 @@ from speechmanager import SpeechManager
 from speechin import speechInEngine
 from speechout import speechOutEngine
 from extensionmanager import ExtensionManager
+from memorymanager import MemoryManager
 from felix import Felix
 
 def isInternetOn():
@@ -18,10 +19,10 @@ def isInternetOn():
     Checks Google servers
     """
     try:
-        address = "http://74.125.228.100"
+        address = "http://74.125.228.100" # Google server
         response = urllib2.urlopen(address, timeout = 1)
         return True
-    except urllib2.URLError as err: pass
+    except urllib2.URLError as error: pass
     return False
 
 if __name__ == "__main__":
@@ -40,16 +41,26 @@ if __name__ == "__main__":
     
     # Create an instance of UserInfo, which encapsulates user data
     userInfo = UserInfo()
+    # Create instances of the managers that govern Felix
+    # The extension manager compiles the dictionary and languagemodel,
+    #     so it must be called before the speech manager
+    # Create an instance of MemoryManager, which encapsulates memory
+    memoryManager = MemoryManager(userInfo)
     # Create an instance of ExtensionManager, which encapsulates extensions
     extensionManager = ExtensionManager()
     # Create an instance of SpeechManager, which encapsulates STT and TTS
     speechManager = SpeechManager(speechInEngine(), speechOutEngine())
+    # Add speechManager to memoryManager once created
+    memoryManager.speechManager = speechManager
+    # Add speechManager and memoryManager to extensionManager once created
     extensionManager.speechManager = speechManager
-    
+    extensionManager.memoryManager = memoryManager
+
     print "STARTING UP..."
-    
-    speechManager.speakText("Hello sir, I am Felix.")
-    
-    # Create and hand control over to Felix
-    felix = Felix(extensionManager, speechManager, userInfo)
+
+    message = "I am Felix, the intelligent computer personal assistant."
+    speechManager.speakText(message)
+
+    # Create and hand control over to Felix instance
+    felix = Felix(extensionManager, speechManager, memoryManager, userInfo)
     felix.live()

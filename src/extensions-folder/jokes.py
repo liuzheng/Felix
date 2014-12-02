@@ -38,7 +38,7 @@ class Jokes(Extension):
         choice = random.choice(jokes)
         return choice
 
-    def execute(self, input, speechManager, userInfo):
+    def execute(self, input, speechManager, memoryManager, userInfo):
         """
         Called when the extension must execute
         Responds with a random joke from jokes.txt

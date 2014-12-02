@@ -31,7 +31,7 @@ class FacebookNotifications(Extension):
         except: pass
         return results
     
-    def execute(self, input, speechManager, userInfo):
+    def execute(self, input, speechManager, memoryManager, userInfo):
         """
         Called when the extension must execute
         Responds with current Facebook notifications for the user

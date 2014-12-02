@@ -18,7 +18,7 @@ class Name(Extension):
         precedence = 0
         super(Name, self).__init__(matchExpression, keys, precedence)
     
-    def execute(self, input, speechManager, userInfo):
+    def execute(self, input, speechManager, memoryManager, userInfo):
         """
         Called when the extension must execute
         Responds with the name of the system ('Felix')

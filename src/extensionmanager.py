@@ -14,6 +14,7 @@ class ExtensionManager(object):
         """
         self.extensions = []
         self.speechManager = None
+        self.memoryManager = None
         self.loadExtensions()
         self.sortExtensions()
         self.compileLanguage()
@@ -64,11 +65,11 @@ class ExtensionManager(object):
                                      DICTIONARY_PATH, LANGUAGEMODEL_PATH)
         print "DONE!\n"
 
-    def execute(self, text, userInfo):
+    def execute(self, input, memoryManager, userInfo):
         """
         Given a text input from the user, executes the proper extension
         """
         for extension in self.extensions:
-            if extension.shouldExecute(text):
-                extension.execute(text, self.speechManager, userInfo)
+            if extension.shouldExecute(input):
+                extension.execute(input, self.speechManager, self.memoryManager, userInfo)
                 break

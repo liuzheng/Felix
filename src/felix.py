@@ -6,12 +6,13 @@ Executes all extensions to provide Felix's features
 
 class Felix(object):
     
-    def __init__(self, extensionManager, speechManager, userInfo, IDENTIFIER="FELIX"):
+    def __init__(self, extensionManager, speechManager, memoryManager, userInfo, IDENTIFIER="FELIX"):
         """
         Initializes the Felix class
         """
         self.extensionManager = extensionManager
         self.speechManager = speechManager
+        self.memoryManager = memoryManager
         self.IDENTIFIER = IDENTIFIER
         self.userInfo = userInfo
     
@@ -20,7 +21,6 @@ class Felix(object):
         Should run forever, after being called in main.py
         Listens and reponds to user speech
         Executes the appropriate extension for the input speech
-        Prints any notifications
         """
         while True:
             ambientBase = None
@@ -31,4 +31,4 @@ class Felix(object):
                 self.speechManager.speakText("Yes, %s." % (nickname))
                 input = self.speechManager.listen(ambientBase)
                 self.speechManager.speakText("One moment.")
-                self.extensionManager.execute(input, self.userInfo)
+                self.extensionManager.execute(input, self.memoryManager, self.userInfo)

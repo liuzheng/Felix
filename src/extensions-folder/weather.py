@@ -27,16 +27,18 @@ class Weather(Extension):
         """
         Returns a weather report for current conditions for the user's location
         """
-        currentAddress = "http://api.wunderground.com/api/%s/geolookup/conditions/q/%s/%s.json" % (apiKey, state, city)
+        address = "http://api.wunderground.com/api/%s/" % (apiKey)
+        address += "geolookup/conditions/q/%s/%s.json" % (state, city)
         weather = ""
-        response = urllib2.urlopen(currentAddress)
+        response = urllib2.urlopen(address)
         jsonString = response.read()
         data = json.loads(jsonString) # Get weather data
         # Get current conditions
         location = str(data["location"]["city"])
-        description = str(data['current_observation']['icon'])
-        currentTemperature = str(data["current_observation"]["temp_f"])
-        weather += ("The current weather in %s is %s with a temperature of %s degrees Fahrenheit." % (location, description, currentTemperature))
+        description = str(data["current_observation"]["icon"])
+        temperature = str(data["current_observation"]["temp_f"])
+        weather += "The current weather in %s is %s " % (location, description)
+        weather += "with a temperature of %s degrees." % (temperature)
         return weather
 
     @staticmethod
@@ -44,23 +46,22 @@ class Weather(Extension):
         """
         Returns a weather report for forecast conditions for the user's location
         """
-        forecastAddress = "http://api.wunderground.com/api/%s/forecast/q/%s/%s.json"  % (apiKey, state, city)
+        address = "http://api.wunderground.com/api/%s/" % (apiKey)
+        address += "forecast/q/%s/%s.json" % (state, city)
         weather = ""
-        response = urllib2.urlopen(forecastAddress)
+        response = urllib2.urlopen(address)
         jsonString = response.read()
         data = json.loads(jsonString) # Get weather data
-        # Get forecast for today        
-        today = data['forecast']['simpleforecast']['forecastday'][0]
-        description = str(today['conditions'])
-        highTemperature = str(today['high']['fahrenheit'])
-        lowTemperature = str(today['low']['fahrenheit'])
-        weather += (" Today's weather will be %s, with a high temperature of %s degrees Fahrenheit and a low of %s degrees Fahrenheit." % (description, highTemperature, lowTemperature))
-        # Get forecast for tomorrow
-        tomorrow = data['forecast']['simpleforecast']['forecastday'][1]
-        description = str(tomorrow['conditions'])
-        highTemperature = str(tomorrow['high']['fahrenheit'])
-        lowTemperature = str(tomorrow['low']['fahrenheit'])
-        weather += (" Tomorrow's weather will be %s, with a high temperature of %s degrees Fahrenheit and a low of %s degrees Fahrenheit." % (description, highTemperature, lowTemperature))
+        # Get forecast for today and tomorrow
+        days = ["Today", "Tomorrow"]
+        for index in xrange(len(days)):
+            forecast = data["forecast"]["simpleforecast"]["forecastday"][index]
+            description = str(forecast["conditions"])
+            high = str(forecast["high"]["fahrenheit"])
+            low = str(forecast["low"]["fahrenheit"])
+            weather += "%s's weather will be %s, " % (days[index], description)
+            weather += "with a high temperature of %s degrees " % (high)
+            weather += "and a low of %s degrees. " % (low)
         return weather
 
     def execute(self, input, speechManager, memoryManager, userInfo):

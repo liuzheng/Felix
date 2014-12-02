@@ -29,7 +29,7 @@ class News(Extension):
         """
         Returns the five top stories on news.google.com
         """
-        feed = feedparser.parse(NEWS_URL)
+        feed = feedparser.parse(address)
         entries = feed.entries
         topStories = []
         for entry in entries:

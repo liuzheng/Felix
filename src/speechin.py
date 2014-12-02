@@ -15,17 +15,17 @@ import os
 
 class PocketSphinx(object):
     def __init__(self,
-                 (acousticModel=
-                 "/usr/local/share/pocketsphinx/model/hmm/en_US/hub4wsj_sc_8k"),
-                 (languageFolder="language-folder/"),
-                 (languagemodel="languagemodel.lm"),
-                 (dictionary="dictionary.dic"),
-                 (languagemodelIdentifier="languagemodel_identifier.lm"),
-                 (dictionaryIdentifier="dictionary_identifier.dic"),
-                 (languagemodelFull=
-                 "/usr/local/share/pocketsphinx/model/lm/en_US/hub4.5000.DMP"),
-                 (dictionaryFull=
-                 "/usr/local/share/pocketsphinx/model/lm/en_US/hub4.5000.dic")):
+                 acousticModel=\
+                 "/usr/local/share/pocketsphinx/model/hmm/en_US/hub4wsj_sc_8k",
+                 languageFolder="language-folder/",
+                 languagemodel="languagemodel.lm",
+                 dictionary="dictionary.dic",
+                 languagemodelIdentifier="languagemodel_identifier.lm",
+                 dictionaryIdentifier="dictionary_identifier.dic",
+                 languagemodelFull=\
+                 "/usr/local/share/pocketsphinx/model/lm/en_US/hub4.5000.DMP",
+                 dictionaryFull=\
+                 "/usr/local/share/pocketsphinx/model/lm/en_US/hub4.5000.dic"):
         """
         PocketSphinx is an open source toolkit for speech recognition
         PocketSphinx is developed by researchers at Carnegie Mellon University

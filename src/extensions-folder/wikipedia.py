@@ -65,6 +65,9 @@ class Wikipedia(Extension):
         """
         speechManager.speakText("Please speak your search query.")
         query = speechManager.listen(isFullVocabulary = True)
+        # Remove 'and' from beginning of query (sometimes Pocketsphinx adds it)
+        removeStr = "and "
+        if query.startswith(removeStr): query = query[len(removeStr):]
         speechManager.speakText("Searching for %s" % (query))
         summary = Wikipedia.getArticleSummary(query)
         if summary:

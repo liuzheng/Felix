@@ -29,7 +29,7 @@ class Weather(Extension):
         """
         currentAddress = "http://api.wunderground.com/api/%s/geolookup/conditions/q/%s/%s.json" % (apiKey, state, city)
         weather = ""
-        response = urllib2.urlopen(currentAddtess)
+        response = urllib2.urlopen(currentAddress)
         jsonString = response.read()
         data = json.loads(jsonString) # Get weather data
         # Get current conditions
@@ -72,14 +72,16 @@ class Weather(Extension):
         apiKey = userInfo.wundergroundKey()
         state = userInfo.locationState()
         city = userInfo.locationCity()
-        weather = Weather.getWeather(apiKey, state, city)
-        if len(weather) == 0:
+        weatherCurrent = Weather.getWeatherCurrent(apiKey, state, city)
+        weatherForecast = Weather.getWeatherForecast(apiKey, state, city)
+        if len(weatherCurrent) == 0:
             # If unable to retrieve the weather
             nickname = userInfo.nickname()
             error = "I am sorry, %s, but I could not retrieve the weather." % (nickname)
             speechManager.speakText(error)
         else:
-            speechManager.speakText(weather)
+            speechManager.speakText(weatherCurrent)
+            speechManager.speakText(weatherForecast)
 
 def getExtension():
     """

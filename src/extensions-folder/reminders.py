@@ -45,19 +45,17 @@ class Reminders(Extension):
         # Check if the user wants to add a new reminder
         if "ADD" in input:
             # Query the user for the reminder message
-            speechManager.speakText("Please speak the reminder message to add.")
+            speechManager.speakText("Please speak the reminder message.")
             message = speechManager.listen(isFullVocabulary = True)
             speechManager.speakText("Adding reminder. %s" % (message))
             Reminders.addReminder(memoryManager, message)
         # Speak the current list of reminders
         reminders = Reminders.getReminders(memoryManager)
-        message = ""
         if len(reminders) > 0:
-            message = "Here are your current reminders. "
-            message += ". ".join(reminders) # Combine list of messages into string
+            speechManager.speakText("Here are your current reminders.")
+            for reminder in reminders: speechManager.speakText(reminder)
         else:
-            message = "You have no current reminders."
-        speechManager.speakText(message)
+            speechManager.speakText("You have no current reminders.")
 
 def getExtension():
     """

@@ -34,8 +34,8 @@ class Time(Extension):
         # Convert 24-hour to 12-hour time
         period = ""
         halfTime = 12
-        if hour > halfTime:
-            hour -= halfTime
+        if hour >= halfTime:
+            if hour > halfTime: hour -= halfTime
             period = "PM"
         else:
             if hour == 0: hour = halfTime

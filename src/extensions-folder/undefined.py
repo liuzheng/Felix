@@ -19,17 +19,19 @@ class Undefined(Extension):
         # Extension with lower precedence gets executed in a tie
         precedence = maxint - 1
         super(Undefined, self).__init__(matchExpression, keys, precedence)
-    
+
     def execute(self, input, speechManager, userInfo):
         """
         Called when the extension must execute
         Responds with a message indicating that the speech was unclear
         """
-        messages = ["Sorry sir, could you repeat that?",
-                    "I beg your pardon, sir?"]
+        nickname = userInfo.nickname()
+        messages = []
+        messages.append("Sorry, %s, could you try that again?" % (nickname))
+        messages.append("I could not quite understand that, %s" % (nickname))
         message = random.choice(messages)
         speechManager.speakText(message)
-        
+
 def getExtension():
     """
     Returns the extension class in the file

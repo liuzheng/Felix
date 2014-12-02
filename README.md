@@ -9,20 +9,23 @@ Felix is an intelligent personal assistant with speech recognition and text-to-s
 - Aggregated news and weather reports
 - Notification of reminders
 - Web integration
-- Modular design allows for extension and addition of features
+- Modular design allows for simple extension and addition of features
 
 **Modules Utilized:**
+- [aplay](http://linux.die.net/man/1/aplay) – command line audio recorder and player for ALSA soundcard driver
+- [Beautiful Soup](http://www.crummy.com/software/BeautifulSoup/) – screen scraping library for parsing web pages
+- [eSpeak](http://espeak.sourceforge.net/) – text to speech option
+- [Flite](http://www.speech.cs.cmu.edu/flite/index.html) – text to speech option
 - [Pocketsphinx](http://cmusphinx.sourceforge.net/) – speech to text
-- [eSpeak](http://espeak.sourceforge.net/) – text to speech
 - [PyAudio](http://people.csail.mit.edu/hubert/pyaudio/) – audio library for sampling sound from a stream
-- [Beautiful Soup](http://www.crummy.com/software/BeautifulSoup/) – screen-scraping library for parsing web pages
 
 The following modules are used to generate speech language models offline and dynamically for Pocketsphinx, and were
 recommended by the creators of Pocketsphinx at CMU on [their website](http://cmusphinx.sourceforge.net/wiki/tutoriallm):
-- [CMU-Cambridge Statistical Language Modeling Toolkit](http://www.speech.cs.cmu.edu/SLM/toolkit_documentation.html) - building statistical language models
+- [Bison](http://www.gnu.org/software/bison/) – converting an annotated context-free grammar into an LR parser
+- [CMU-Cambridge Statistical Language Modeling Toolkit](http://www.speech.cs.cmu.edu/SLM/toolkit_documentation.html) – building statistical language models
+- [M2M-aligner](https://code.google.com/p/m2m-aligner/) – letter to phoneme conversion
 - [MIT Language Modeling Toolkit](https://code.google.com/p/mitlm/) – building statistical language models
 - [OpenFST](http://www.openfst.org) – weighting the words in the model
-- [M2M-aligner](https://code.google.com/p/m2m-aligner/) – letter to phoneme conversion
 - [Phonetisaurus](https://code.google.com/p/phonetisaurus/) – grapheme to phoneme conversion
 
 **Structure:**

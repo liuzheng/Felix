@@ -1,7 +1,15 @@
 """
 wikipedia.py
+Devin Gund + deg + Section E
+
 Responds by first asking the user for their search query
 Then responds with the summary of the query on Wikipedia
+
+Utilizes modules:
+    - BeautifulSoup
+
+Information for working with BeautifulSoup provided from:
+    http://www.crummy.com/software/BeautifulSoup/bs4/doc/
 """
 
 from extension import Extension

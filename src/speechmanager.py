@@ -1,11 +1,25 @@
+"""
+speechmanager.py
+Devin Gund + deg + Section E
+
+Controls the speech-to-text and text-to-speech abilities of Felix
+
+Utilizes modules:
+    - pyaudio
+    - audioop
+    - wave
+    
+Information for working with pyaudio provided from:
+    http://people.csail.mit.edu/hubert/pyaudio/docs/
+"""
+
 import os
-import audioop
 import pyaudio
+import audioop
 from wave import open as openAudio
 import re
 
 class SpeechManager(object):
-
     def __init__(self, speechIn, speechOut):
         """
         Initializes the Speech instance
@@ -20,6 +34,7 @@ class SpeechManager(object):
     def getLevel(self, data):
         """
         Returns the level of an audio data file
+        Formula adopted from http://en.wikipedia.org/wiki/DBFS#RMS_levels
         """
         level = audioop.rms(data, 2)
         # Need to scale the level down to prevent false positives
@@ -32,24 +47,20 @@ class SpeechManager(object):
         Listens to ambient noise and returns a level to be used as the base
         """
         LISTEN_TIME = 1 # Time alloted to calculate ambient base
-
         # Initialize audio stream
         audio = pyaudio.PyAudio()
         stream = audio.open(format = pyaudio.paInt16, channels = 1,
                             rate = self.DATA_RATE, input = True,
                             frames_per_buffer = self.BUFFER_SIZE)
-
         # Store level values
-        dataPoints = 20 # Amount of level data; higher is precise but s    low
+        dataPoints = 20 # Amount of level data; higher is precise but slow
         levels = [i for i in range(dataPoints)]
-
         # Calculate average level for ambient base
         for i in range(0, (self.DATA_RATE / self.BUFFER_SIZE) * LISTEN_TIME):
             data = stream.read(self.BUFFER_SIZE)
             levels.pop(0)
             levels.append(self.getLevel(data))
             average = sum(levels) / len(levels)
-
         # Calculate ambient base and stop audio collection
         ambientBase = average * self.AMBIENT_MULTIPLIER
         stream.stop_stream()
@@ -57,20 +68,18 @@ class SpeechManager(object):
         audio.terminate()
         return ambientBase
 
-    def listenForIdentifier(self, IDENTIFIER):
+    def listenForIdentifier(self, identifier):
         """
-        Listens for IDENTIFIER (default is 'Felix')
+        Listens for identifier (default is 'Felix')
         """
         FILENAME = "identifier.wav"
         LISTEN_TIME = 10 # Time allotted to listening before process restarts
         ambientBase = self.getAmbientBase()
-
         # Initialize audio stream
         audio = pyaudio.PyAudio()
         stream = audio.open(format = pyaudio.paInt16, channels = 1,
                             rate = self.DATA_RATE, input = True,
                             frames_per_buffer = self.BUFFER_SIZE)
-
         # Listening for sound above ambient base
         frames = []
         soundDetected = False
@@ -81,7 +90,6 @@ class SpeechManager(object):
             if level > ambientBase:
                 soundDetected = True
                 break
-
         # Stop current steam if no sound detected
         if not soundDetected:
             print "No sound detected"
@@ -89,17 +97,14 @@ class SpeechManager(object):
             stream.close()
             audio.terminate()
             return None
-
         # Else, sound was detected and must be checked for IDENTIFIER
         # Cutoff recording before disturbance was detected
         disturbanceBuffer = 20
         frames = frames[-disturbanceBuffer:]
-
         # Finish recording
         for i in xrange(0, (self.DATA_RATE / self.BUFFER_SIZE)):
             data = stream.read(self.BUFFER_SIZE)
             frames.append(data)
-
         # Save audio data and stop audio collection
         stream.stop_stream()
         stream.close()
@@ -110,10 +115,9 @@ class SpeechManager(object):
         write_frames.setframerate(self.DATA_RATE)
         write_frames.writeframes("".join(frames))
         write_frames.close()
-
         # Obtain text from speech and check if it contains IDENTIFIER
         text = self.speechIn.textFromSpeech(FILENAME, isIdentifier = True)
-        if IDENTIFIER.upper() in text.upper(): return ambientBase
+        if identifier.upper() in text.upper(): return ambientBase
         else: return False
 
     def listen(self, ambientBase=None, isFullVocabulary=False):
@@ -125,19 +129,14 @@ class SpeechManager(object):
         FILENAME = "speech.wav"
         SOUNDNAME = "media-folder/beep.wav"
         TIMEOUT_LOOP = 20
-
-        if ambientBase == None:
-            ambientBase = self.getAmbientBase()
-
-        # TONE IN
+        if ambientBase == None: ambientBase = self.getAmbientBase()
+        # Play start tone
         self.speechOut.play(SOUNDNAME)
-
         # Initialize audio stream
         audio = pyaudio.PyAudio()
         stream = audio.open(format = pyaudio.paInt16, channels = 1,
                             rate = self.DATA_RATE, input = True,
                             frames_per_buffer = self.BUFFER_SIZE)
-
         frames = []
         # Initialize list of levels
         dataPoints = 30 # Amount of level data; higher is precise but slow
@@ -154,7 +153,6 @@ class SpeechManager(object):
             # Value determined through trial and error
             dampeningScale = 3.0 / 4.0
             if average < ambientBase * dampeningScale: break
-
         # Save audio data and stop audio collection
         stream.stop_stream()
         stream.close()
@@ -165,12 +163,11 @@ class SpeechManager(object):
         write_frames.setframerate(self.DATA_RATE)
         write_frames.writeframes("".join(frames))
         write_frames.close()
-
-        # TONE OUT
+        # Play end tone
         self.speechOut.play(SOUNDNAME)
-
         # Return text from speech
-        text = self.speechIn.textFromSpeech(FILENAME, isFullVocabulary = isFullVocabulary)
+        text = self.speechIn.textFromSpeech(FILENAME,
+                                            isFullVocabulary=isFullVocabulary)
         return text
 
     def speakText(self, text):

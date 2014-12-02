@@ -1,5 +1,7 @@
 """
 username.py
+Devin Gund + deg + Section E
+
 Responds with the name of the user
 """
 
@@ -17,7 +19,7 @@ class UserName(Extension):
         # Extension with lower precedence gets executed in a tie
         precedence = 0
         super(UserName, self).__init__(matchExpression, keys, precedence)
-    
+
     def execute(self, input, speechManager, memoryManager, userInfo):
         """
         Called when the extension must execute
@@ -29,7 +31,7 @@ class UserName(Extension):
         message = ("Your name is %s %s, but I call you %s." %
                    (firstName, lastName, nickname))
         speechManager.speakText(message)
-        
+
 def getExtension():
     """
     Returns the extension class in the file

@@ -1,6 +1,8 @@
 """
 memorymanager.py
-Manages all of Felix's memory
+Devin Gund + deg + Section E
+
+Keeps track of Felix's memories
 Keeps track of reminders
 """
 

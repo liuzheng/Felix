@@ -1,6 +1,18 @@
 """
 speechout.py
+Devin Gund + deg + Section E
+
 Encapsulates any text-to-speech applications used with Felix
+
+Utilizes modules:
+    - eSpeak
+    - aplay
+
+Information for working with eSpeak provided from:
+    http://espeak.sourceforge.net/commands.html
+
+Information for working with aplay provided from:
+    http://linux.die.net/man/1/aplay
 """
 
 import os
@@ -16,20 +28,21 @@ class eSpeak(object):
         Returns if eSpeak is installed by running 'which espeak' on command line
         """
         return os.system("which espeak") == 0
-    
-    def speakText(self, text, conversionParams="-ven+m4 -p 50 -s 140 --stdout > output.wav"):
+
+    def speakText(self, text,
+                 conversionParams="-ven+m4 -p 50 -s 140 --stdout > output.wav"):
         """
         Plays a sound file created from a string of output text
         """
         os.system("espeak %s \"%s\"" % (conversionParams, text))
         self.play("output.wav")
-    
+
     def play(self, file):
         """
         Plays a sound file using aplay
         """
         os.system("aplay -D hw:1,0 %s" % file)
-    
+
 def speechOutEngine():
     """
     Returns a TTS engine for use with Felix

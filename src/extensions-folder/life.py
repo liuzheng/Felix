@@ -1,5 +1,7 @@
 """
 life.py
+Devin Gund + deg + Section E
+
 Responds with the meaning of life
 """
 
@@ -18,7 +20,7 @@ class Life(Extension):
         # Extension with lower precedence gets executed in a tie
         precedence = 0
         super(Life, self).__init__(matchExpression, keys, precedence)
-    
+
     def execute(self, input, speechManager, memoryManager, userInfo):
         """
         Called when the extension must execute
@@ -28,7 +30,7 @@ class Life(Extension):
                     "42, sir."]
         message = random.choice(messages)
         speechManager.speakText(message)
-        
+
 def getExtension():
     """
     Returns the extension class in the file

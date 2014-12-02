@@ -1,5 +1,7 @@
 """
 brief.py
+Devin Gund + deg + Section E
+
 Responds with a brief for the current situation
 Includes time, weather, and news
 """
@@ -26,7 +28,7 @@ class Brief(Extension):
         super(Brief, self).__init__(matchExpression, keys, precedence)
         # Import extensions that will be called in the brief
         self.extensions = [Time(), Weather(), News()]
-    
+
     def execute(self, input, speechManager, memoryManager, userInfo):
         """
         Called when the extension must execute
@@ -44,7 +46,7 @@ class Brief(Extension):
         speechManager.speakText(message)
         for extension in self.extensions:
             extension.execute(input, speechManager, memoryManager, userInfo)
-        
+
 def getExtension():
     """
     Returns the extension class in the file

@@ -1,45 +1,58 @@
 """
 speechin.py
+Devin Gund + deg + Section E
+
 Encapsulates any speech-to-text applications used with Felix
+
+Utilizes modules:
+    - Pocketsphinx
+
+Information for working with Pocketsphinx provided from:
+    http://cmusphinx.sourceforge.net/wiki/tutorialpocketsphinx
 """
 
 import os
 
 class PocketSphinx(object):
     def __init__(self,
-                 MODEL = "/usr/local/share/pocketsphinx/model/hmm/en_US/hub4wsj_sc_8k",
-                 LANGUAGE_FOLDER="language-folder/",
-                 LANGUAGEMODEL="languagemodel.lm",
-                 DICTIONARY="dictionary.dic",
-                 LANGUAGEMODEL_IDENTIFIER="languagemodel_identifier.lm",
-                 DICTIONARY_IDENTIFIER="dictionary_identifier.dic",
-                 LANGUAGEMODEL_FULL="/usr/local/share/pocketsphinx/model/lm/en_US/hub4.5000.DMP",
-                 DICTIONARY_FULL="/usr/local/share/pocketsphinx/model/lm/en_US/hub4.5000.dic"):
+                 (acousticModel=
+                 "/usr/local/share/pocketsphinx/model/hmm/en_US/hub4wsj_sc_8k"),
+                 (languageFolder="language-folder/"),
+                 (languagemodel="languagemodel.lm"),
+                 (dictionary="dictionary.dic"),
+                 (languagemodelIdentifier="languagemodel_identifier.lm"),
+                 (dictionaryIdentifier="dictionary_identifier.dic"),
+                 (languagemodelFull=
+                 "/usr/local/share/pocketsphinx/model/lm/en_US/hub4.5000.DMP"),
+                 (dictionaryFull=
+                 "/usr/local/share/pocketsphinx/model/lm/en_US/hub4.5000.dic")):
         """
         PocketSphinx is an open source toolkit for speech recognition
         PocketSphinx is developed by researchers at Carnegie Mellon University
         """
+        # Ensure that Pocketsphinx has been imported
         try: import pocketsphinx
         except: import pocketsphinx
         # Create the speech decoder for Felix commands
-        self.speechDecoder = pocketsphinx.Decoder(hmm=MODEL,
-                                       lm=LANGUAGE_FOLDER + LANGUAGEMODEL,
-                                       dict=LANGUAGE_FOLDER + DICTIONARY)
-        # Create the speech decoder for the IDENTIFIER
-        self.speechDecoderIdentifier = pocketsphinx.Decoder(hmm=MODEL,
-                            lm=LANGUAGE_FOLDER + LANGUAGEMODEL_IDENTIFIER,
-                            dict=LANGUAGE_FOLDER + DICTIONARY_IDENTIFIER)
+        self.speechDecoder = pocketsphinx.Decoder(hmm=acousticModel,
+                                       lm=languageFolder + languagemodel,
+                                       dict=languageFolder + dictionary)
+        # Create the speech decoder for the identifier
+        self.speechDecoderIdentifier = pocketsphinx.Decoder(hmm=acousticModel,
+                            lm=languageFolder + languagemodelIdentifier,
+                            dict=languageFolder + dictionaryIdentifier)
         # Create the speech decoder for full speech vocabulary
-        self.speechDecoderFullVocabulary = pocketsphinx.Decoder(hmm=MODEL,
-                                  lm=LANGUAGEMODEL_FULL, dict=DICTIONARY_FULL)
-    
+        self.speechDecoderFullVocabulary = pocketsphinx.Decoder(
+                            hmm=acousticModel, lm=languagemodelFull,
+                            dict=dictionaryFull)
+
     @staticmethod
     def isInstalled():
         """
         Returns if installed by running 'which pocketsphinx_continuous'
         """
         return os.system("which pocketsphinx_continuous") == 0
-    
+
     def textFromSpeech(self, filePath, isIdentifier=False, isFullVocabulary=False):
         """
         Returns a string containing the probable text from a file of speech
@@ -60,7 +73,7 @@ class PocketSphinx(object):
             self.speechDecoder.decode_raw(audioFile)
             textPossibilities = self.speechDecoder.get_hyp() # Hypothesis
         text = textPossibilities[0]
-        if text == None: text = ""
+        if text == None: text = "" # Ensure that text is always string
         print "---------------------------------------------"
         print "Text found:", text
         print "---------------------------------------------"

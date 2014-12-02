@@ -1,5 +1,7 @@
 """
 extension.py
+Devin Gund + deg + Section E
+
 The Extension class serves as the parent class for all custom extensions
 """
 
@@ -19,40 +21,40 @@ class Extension(object):
         self.matchExpression = matchExpression
         self.keys = keys
         self.precedence = precedence
-    
+
     def __eq__(self, other):
         """
-        Extension instances / subclasses are equal if their precedence is equal
+        Extension instances / subclasses are equal if precedences are equal
         """
         if not isinstance(other, extension): return False
         return self.precedence == other.precedence
-        
+
     def __gt__(self, other):
         """
-        Extension instance is greater if its precedence is greater
+        Extension instance is greater if precedence is greater
         """
         if not isinstance(other, extension): return False
         return self.precedence > other.precedence
-    
+
     def __lt__(self, other):
         """
-        Extension instance is less if its precedence is less
+        Extension instance is less if precedence is less
         """
         if not isinstance(other, extension): return False
         return self.precedence < other.precedence
-    
+
     def __ge__(self, other):
         """
-        An extension instance is greater/equal if its precedence is greater/equal
+        An extension instance is greater/equal if precedence is greater/equal
         """
         return __gt__(self, other) or __eq__(self, other)
-        
+
     def __le__(self, other):
         """
-        An extension instance is less/equal if its precedence is less/equal
+        An extension instance is less/equal if precedence is less/equal
         """
         return __lt__(self, other) or __eq__(self, other)
-    
+
     def shouldExecute(self, input):
         """
         Returns True if the input is related to this extension
@@ -63,7 +65,7 @@ class Extension(object):
         # Regex earches for self.matchExpression within the input
         isMatch = bool(re.search(snippet, input, re.IGNORECASE))
         return isMatch
-    
+
     def execute(self, input, speechManager, memoryManager, userInfo):
         """
         Responds to user input with pertinent information or actions

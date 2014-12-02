@@ -1,5 +1,7 @@
 """
 undefined.py
+Devin Gund + deg + Section E
+
 Responds with a message indicating that the speech was unclear
 """
 

@@ -1,5 +1,7 @@
 """
 time.py
+Devin Gund + deg + Section E
+
 Responds with the current time and date for the user's time zone
 """
 

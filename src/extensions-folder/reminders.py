@@ -1,8 +1,9 @@
 """
 reminders.py
-Responds with the current reminders
-Optionally allows for the addition of a reminder
-Reminders last for 24 hours
+Devin Gund + deg + Section E
+
+Responds with the current list of reminders and allows for adding reminders
+Reminders last for 24 hours before being cleared
 """
 
 from extension import Extension

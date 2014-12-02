@@ -1,5 +1,7 @@
 """
 main.py
+Devin Gund + deg + Section E
+
 Initializes all of the components of Felix
 Hands over control to the Felix class to operate indefinitely
 """
@@ -13,7 +15,7 @@ from extensionmanager import ExtensionManager
 from memorymanager import MemoryManager
 from felix import Felix
 
-def isInternetOn():
+def isInternetConnected():
     """
     Returns True if the a connection to the Internet is found
     Checks Google servers
@@ -33,12 +35,12 @@ if __name__ == "__main__":
     print "| Copyright 2014 Devin Gund. All rights reserved. |"
     print "\\-------------------------------------------------/"
     print
-    
-    if not isInternetOn():
+
+    if not isInternetConnected():
         print "A connection to the Internet could not be established."
         print "Some services may be unavailable."
         print
-    
+
     # Create an instance of UserInfo, which encapsulates user data
     userInfo = UserInfo()
     # Create instances of the managers that govern Felix

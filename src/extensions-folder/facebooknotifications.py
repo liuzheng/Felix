@@ -1,6 +1,14 @@
 """
 facebooknotifications.py
+Devin Gund + deg + Section E
+
 Responds with current Facebook notifications for the user
+
+Utilizes modules:
+    - Facebook SDK
+
+Information for working with the Facebook SDK and Graph API provided from:
+    https://developers.facebook.com/docs/graph-api
 """
 
 from extension import Extension
@@ -17,20 +25,21 @@ class FacebookNotifications(Extension):
         keys = ["FACEBOOK", "NOTIFICATION"]
         # Extension with lower precedence gets executed in a tie
         precedence = 0
-        super(FacebookNotifications, self).__init__(matchExpression, keys, precedence)
-    
+        super(FacebookNotifications, self).__init__(matchExpression,
+                                                    keys, precedence)
+
     @staticmethod
     def getNotifications(accessToken):
         """
         Returns Facebook notifications for the user
-        Utilizes the facebook module and GraphAPI
+        Utilizes the Facebook module and GraphAPI
         """
         graph = facebook.GraphAPI(accessToken)
         results = None
         try: results = graph.request("me/notifications")
         except: pass
         return results
-    
+
     def execute(self, input, speechManager, memoryManager, userInfo):
         """
         Called when the extension must execute
@@ -44,17 +53,18 @@ class FacebookNotifications(Extension):
                 speechManager.speakText(message)
                 return
             updates = []
-            for notification in results["data"]:
+            for notification in results["data"]: # Get notification titles
                 updates.append(notification["title"])
             count = len(results['data'])
             updateSummary = " ".join(updates)
-            message = "You have %s Facebook notifications. %s." % (str(count), updateSummary) 
+            message = "You have %s Facebook notifications. %s." % (str(count),
+                                                                 updateSummary)
             speechManager.speakText(message)
         else:
             nickname = userInfo.nickname()
-            error = "I am sorry, %s, but I could not access Facebook." % (nickname)
+            error = "I am sorry, %s, but I cannot access Facebook." % (nickname)
             speechManager.speakText(error)
-        
+
 def getExtension():
     """
     Returns the extension class in the file

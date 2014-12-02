@@ -1,5 +1,7 @@
 """
 jokes.py
+Devin Gund + deg + Section E
+
 Responds with a random (bad) computer joke
 """
 
@@ -26,9 +28,9 @@ class Jokes(Extension):
         """
         jokes = []
         with open(jokeFile, "rt") as file:
-            print "well, we opened the file....."
             joke = []
             for line in file.readlines():
+                # If empty line, store joke and move on to next
                 if not line.strip() and len(joke) > 0:
                     jokes.append(tuple(joke))
                     print "Adding joke:", joke

@@ -6,6 +6,7 @@ Initializes all of the components of Felix
 Hands over control to the Felix class to operate indefinitely
 """
 
+import os
 import urllib2
 from userinfo import UserInfo
 from speechmanager import SpeechManager
@@ -14,6 +15,9 @@ from speechout import speechOutEngine
 from extensionmanager import ExtensionManager
 from memorymanager import MemoryManager
 from felix import Felix
+
+def playStartTone(file = "media-folder/beep.wav"):
+    os.system("aplay -D hw:1,0 %s" % file)
 
 def isInternetConnected():
     """
@@ -28,6 +32,8 @@ def isInternetConnected():
     return False
 
 if __name__ == "__main__":
+    playStartTone() # Confirms startup process underway
+       
     print
     print "/-------------------------------------------------\\"
     print "| Welcome to Felix                                |"

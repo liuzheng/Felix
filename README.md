@@ -11,6 +11,15 @@ Felix is an intelligent personal assistant with speech recognition and text-to-s
 - Web integration
 - Modular design allows for simple extension and addition of features
 
+**User Interaction Overview:**
+
+1. User: "Felix"
+2. Felix: "Yes, User"
+3. Felix: _beeps_
+4. User: _speaks command_ (ex. "What time is it?" or "Search Wikipedia.")
+5. Felix: _beeps_
+6. Felix: _speaks response_ (ex. "The time is 3:15pm.") or _asks for more input_ (ex. "Please speak your search query.")
+
 **Modules Utilized:**
 - [aplay](http://linux.die.net/man/1/aplay) – command line audio recorder and player for ALSA soundcard driver
 - [Beautiful Soup](http://www.crummy.com/software/BeautifulSoup/) – screen scraping library for parsing web pages
@@ -18,9 +27,10 @@ Felix is an intelligent personal assistant with speech recognition and text-to-s
 - [Flite](http://www.speech.cs.cmu.edu/flite/index.html) – text to speech option
 - [Pocketsphinx](http://cmusphinx.sourceforge.net/) – speech to text
 - [PyAudio](http://people.csail.mit.edu/hubert/pyaudio/) – audio library for sampling sound from a stream
+- [Python for Facebook](https://github.com/pythonforfacebook/facebook-sdk) – provides tools for working with the Facebook API and Graph Search
 
 The following modules are used to generate speech language models offline and dynamically for Pocketsphinx, and were
-recommended by the creators of Pocketsphinx at CMU on [their website](http://cmusphinx.sourceforge.net/wiki/tutoriallm):
+recommended by the creators of Pocketsphinx at CMU on [their tutorial](http://cmusphinx.sourceforge.net/wiki/tutoriallm):
 - [Bison](http://www.gnu.org/software/bison/) – converting an annotated context-free grammar into an LR parser
 - [CMU-Cambridge Statistical Language Modeling Toolkit](http://www.speech.cs.cmu.edu/SLM/toolkit_documentation.html) – building statistical language models
 - [M2M-aligner](https://code.google.com/p/m2m-aligner/) – letter to phoneme conversion
@@ -35,9 +45,9 @@ recommended by the creators of Pocketsphinx at CMU on [their website](http://cmu
 - languagecompiler.py – Builds language models from the words defined in extensions
 - speechmanager.py – Controls the speech-to-text and text-to-speech abilities of Felix
 - speechin.py – Wrapper file for Pocketsphinx; implements easy methods to use
-- speechout.py – Wrapper file for eSpeak; implements easy methods to use
-- memorymanager.py - Keeps track of Felix's memories (ex. reminders)
-- userinfo.py – Keeps track of important user data (ex. name, location, timezone, email)
+- speechout.py – Wrapper file for eSpeak or Flite; implements easy methods to use
+- memorymanager.py – Keeps track of Felix's memories (ex. reminders)
+- userinfo.py – Keeps track of important user data (ex. name, location, timezone)
 - setup.py – May be called separately from the program to initialize user data
 
 **Extensions:**
@@ -45,6 +55,7 @@ recommended by the creators of Pocketsphinx at CMU on [their website](http://cmu
 On top of the core structure of Felix, the different features of interaction with the user come from extensions, which are
 classes in extension-folder that inherit from Extension, the parent class for all extensions.
 - brief.py – Responds with a brief for the current situation
+- demo.py – Responds with an overview of the Felix system and how it works
 - facebooknotifications.py – Responds with a summary of [Facebook](https://www.facebook.com/) notifications
 - jokes.py – Responds with a random computer joke, taken from jokes.txt
 - life.py – Responds with the meaning of life

@@ -32,7 +32,7 @@ class Wikipedia(Extension):
         super(Wikipedia, self).__init__(matchExpression, keys, precedence)
 
     @staticmethod
-    def getArticleSummary(query):
+    def getArticleSummary(query, count=3):
         """
         Returns a summary for the Wikipedia article for the query
         This summary is pulled from the first paragraph of the article
@@ -54,6 +54,9 @@ class Wikipedia(Extension):
             summary = re.sub(r"  ", " ", summary) # Remove extra spaces
             summary = re.sub(r" \.", ".", summary) # Format periods
             summary = re.sub(r" \,", ",", summary) # Format commas
+            summary.replace("\"", "") # Remove quotation marks
+            # Limit number of sentences to number specified in count
+            summary = " ".join(re.split(r"(?<=[.?!])\s+", summary, count)[:-1])
         except:
             print "Error retrieving information."
         return summary
@@ -68,7 +71,7 @@ class Wikipedia(Extension):
         # Remove 'and' from beginning of query (sometimes Pocketsphinx adds it)
         removeStr = "and "
         if query.startswith(removeStr): query = query[len(removeStr):]
-        speechManager.speakText("Searching for %s" % (query))
+        speechManager.speakText("One moment. Searching for %s." % (query))
         summary = Wikipedia.getArticleSummary(query)
         if summary:
             speechManager.speakText(summary)

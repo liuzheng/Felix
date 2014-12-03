@@ -43,7 +43,8 @@ class News(Extension):
         Called when the extension must execute
         Responds with the five top news stories
         """
-        speechManager.speakText("Here are your five top news stories.")
+        message = "One moment. Obtaining the five top news stories."
+        speechManager.speakText(message)
         topStories = News.getNews()
         if len(topStories) == 0:
             # If unable to retrieve the news

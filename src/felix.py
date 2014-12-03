@@ -34,5 +34,4 @@ class Felix(object):
                 nickname = self.userInfo.nickname()
                 self.speechManager.speakText("Yes, %s." % (nickname))
                 input = self.speechManager.listen(ambientBase)
-                self.speechManager.speakText("One moment.")
                 self.extensionManager.execute(input, self.memoryManager, self.userInfo)

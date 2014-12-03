@@ -34,7 +34,9 @@ class Brief(Extension):
         Called when the extension must execute
         Responds with a brief for the current situation
         """
-        hour = datetime.datetime.now().hour
+        tz = pytz.timezone(userInfo.timezone())
+        now = datetime.datetime.now(tz = tz)
+        hour = now.hour
         afternoon = 12 # The afternoon starts at 12:00
         evening = 18 # The evening starts at 18:00
         timeOfDay = ""

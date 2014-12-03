@@ -24,7 +24,7 @@ class FacebookNotifications(Extension):
         # Key words that Felix must compile into the language model
         keys = ["FACEBOOK", "NOTIFICATION"]
         # Extension with lower precedence gets executed in a tie
-        precedence = 0
+        precedence = 2
         super(FacebookNotifications, self).__init__(matchExpression,
                                                     keys, precedence)
 
@@ -45,6 +45,8 @@ class FacebookNotifications(Extension):
         Called when the extension must execute
         Responds with current Facebook notifications for the user
         """
+        message = "One moment. Obtaining current Facebook notifications."
+        speechManager.speakText(message)
         accessToken = userInfo.facebookKey()
         notifications = FacebookNotifications.getNotifications(accessToken)
         if notifications:
@@ -53,9 +55,9 @@ class FacebookNotifications(Extension):
                 speechManager.speakText(message)
                 return
             updates = []
-            for notification in results["data"]: # Get notification titles
+            for notification in notifications["data"]: # Get notification titles
                 updates.append(notification["title"])
-            count = len(results['data'])
+            count = len(notifications["data"]) # Get count
             updateSummary = " ".join(updates)
             message = "You have %s Facebook notifications. %s." % (str(count),
                                                                  updateSummary)

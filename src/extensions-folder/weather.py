@@ -69,7 +69,8 @@ class Weather(Extension):
         Called when the extension must execute
         Responds with a current weather report for the user's location
         """
-        speechManager.speakText("Here is the current weather.")
+        message = "One moment. Obtaining weather report."
+        speechManager.speakText(message)
         apiKey = userInfo.wundergroundKey()
         state = userInfo.locationState()
         city = userInfo.locationCity()

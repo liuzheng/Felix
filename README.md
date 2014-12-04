@@ -42,6 +42,7 @@ recommended by the creators of Pocketsphinx at CMU on [their tutorial](http://cm
 - main.py – Called to begin the program; initializes program managers and the Felix instance
 - felix.py – Controls the program, looping, checking for speech, and running extensions
 - extensionsmanager.py – In charge of importing the extension files and running them
+- extension.py – Parent class for all extensions; handles regular expression matching to determine if extension should execute
 - languagecompiler.py – Builds language models from the words defined in extensions
 - speechmanager.py – Controls the speech-to-text and text-to-speech abilities of Felix
 - speechin.py – Wrapper file for Pocketsphinx; implements easy methods to use

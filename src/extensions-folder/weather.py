@@ -29,8 +29,9 @@ class Weather(Extension):
         """
         address = "http://api.wunderground.com/api/%s/" % (apiKey)
         address += "geolookup/conditions/q/%s/%s.json" % (state, city)
-        weather = ""
-        response = urllib2.urlopen(address)
+        weather = response = ""
+        try: response = urllib2.urlopen(address)
+        except: return None # If Internet is unavailable
         jsonString = response.read()
         data = json.loads(jsonString) # Get weather data
         # Get current conditions
@@ -48,8 +49,9 @@ class Weather(Extension):
         """
         address = "http://api.wunderground.com/api/%s/" % (apiKey)
         address += "forecast/q/%s/%s.json" % (state, city)
-        weather = ""
-        response = urllib2.urlopen(address)
+        weather = response = ""
+        try: response = urllib2.urlopen(address)
+        except: return None # If Internet is unavailable
         jsonString = response.read()
         data = json.loads(jsonString) # Get weather data
         # Get forecast for today and tomorrow
@@ -76,7 +78,7 @@ class Weather(Extension):
         city = userInfo.locationCity()
         weatherCurrent = Weather.getWeatherCurrent(apiKey, state, city)
         weatherForecast = Weather.getWeatherForecast(apiKey, state, city)
-        if len(weatherCurrent) == 0:
+        if weatherCurrent == None or len(weatherCurrent) == 0:
             # If unable to retrieve the weather
             nickname = userInfo.nickname()
             error = "I am sorry, %s, but I could not retrieve the weather." % (nickname)

@@ -29,7 +29,9 @@ class News(Extension):
         """
         Returns the five top stories on news.google.com
         """
-        feed = feedparser.parse(address)
+        feed = None
+        try: feed = feedparser.parse(address)
+        except: return None # If Internet is unavailable
         entries = feed.entries
         topStories = []
         for entry in entries:
@@ -46,7 +48,7 @@ class News(Extension):
         message = "One moment. Obtaining the five top news stories."
         speechManager.speakText(message)
         topStories = News.getNews()
-        if len(topStories) == 0:
+        if topStories == None or len(topStories) == 0:
             # If unable to retrieve the news
             nickname = userInfo.nickname()
             error = "I am sorry, %s, but I could not retrieve the news." % (

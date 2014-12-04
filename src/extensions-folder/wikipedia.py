@@ -38,6 +38,7 @@ class Wikipedia(Extension):
         This summary is pulled from the first paragraph of the article
         Utilizes the BeautifulSoup module for HTML parsing
         """
+        if len(query) == 0: return None # If the query is blank
         article = urllib.quote(query)
         opener = urllib2.build_opener()
         opener.addheaders = [("User-agent", "Mozilla/5.0")] # Set user agent
